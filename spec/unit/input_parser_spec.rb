@@ -13,7 +13,7 @@ RSpec.describe InputParser do
     end
 
     context "when `input` contains only a command" do
-      let (:input) { a_string.upcase }
+      let(:input) { a_string.upcase }
 
       it "contains the specified command" do
         expect(subject.parse(input)).to match [input]
@@ -21,7 +21,7 @@ RSpec.describe InputParser do
 
       ["lowercase", "MixedCase"].each do |command|
         context "and `input` is #{command}" do
-          let (:input) { command }
+          let(:input) { command }
 
           it "is normalized" do
             expect(subject.parse(input)).to match [input.upcase]
@@ -31,17 +31,17 @@ RSpec.describe InputParser do
     end
 
     context "when `input` contains a command and 'n' arguments" do
-      let (:input) { "COMMAND #{arguments.join ','}" }
+      let(:input) { "COMMAND #{arguments.join ','}" }
 
-      let (:arguments) { Array.new(a_number(min: 2, max: 5)) { a_string.upcase } }
+      let(:arguments) { Array.new(a_number(min: 2, max: 5)) { a_string.upcase } }
 
       it "contains the command and all given arguments" do
-        expect(subject.parse(input)).to include *arguments
+        expect(subject.parse(input)).to include(*arguments)
       end
 
       ["lowercase", "MixedCase"].each do |argument|
         context "and arguments are #{argument}" do
-          let (:arguments) { [argument] }
+          let(:arguments) { [argument] }
 
           it "normalises all arguments" do
             expect(subject.parse(input)).to include argument.upcase
@@ -50,15 +50,15 @@ RSpec.describe InputParser do
       end
 
       context "when there is additional whitespace separating the command and arguments" do
-        let (:input) { "COMMAND       #{arguments.join ','}" }
+        let(:input) { "COMMAND       #{arguments.join ','}" }
 
         it "is ignored" do
           expect(subject.parse(input)).to match ["COMMAND", *arguments]
         end
       end
-      
+
       context "when there is additional whitespace separating arguments" do
-        let (:input) { "COMMAND #{arguments.join ', '}" }
+        let(:input) { "COMMAND #{arguments.join ', '}" }
 
         it "is ignored" do
           expect(subject.parse(input)).to match ["COMMAND", *arguments]

@@ -7,7 +7,7 @@ class InputParser
     def parse input
       raise ArgumentError, "input cannot be nil or blank" unless input.present?
 
-      input.split(/[\s,]{1,}/).collect { |fragment| fragment.upcase }
+      input.split(/[\s,]{1,}/).collect(&:upcase)
     end
   end
 end

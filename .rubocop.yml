@@ -13,3 +13,6 @@ Style/MethodDefParentheses:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/WordArray:
+  EnforcedStyle: brackets
