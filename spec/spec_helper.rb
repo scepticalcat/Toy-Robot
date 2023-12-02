@@ -3,8 +3,8 @@
 require "simplecov"
 require "zeitwerk"
 
-Dir.glob("#{__dir__}/support/**/*").each do |file|
-  require file
+Dir.glob("#{__dir__}/support/**/*").each do |filename|
+  require filename if File.file? filename
 end
 
 loader = Zeitwerk::Loader.new

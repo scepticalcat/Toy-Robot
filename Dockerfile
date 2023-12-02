@@ -17,3 +17,5 @@ RUN gem install bundler
 RUN bundle install
 
 COPY . $INSTALL_PATH
+
+ENV PATH "${INSTALL_PATH}/bin:${PATH}"
