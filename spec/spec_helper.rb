@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 require "simplecov"
+require "zeitwerk"
+
+Dir.glob("#{__dir__}/support/**/*").each do |file|
+  require file
+end
+
+loader = Zeitwerk::Loader.new
+loader.push_dir("#{__dir__}/../lib")
+loader.setup
 
 SimpleCov.start do
   add_filter "spec/"
