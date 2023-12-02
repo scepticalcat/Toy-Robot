@@ -6,8 +6,8 @@ RSpec.describe InputParser do
   describe "#parse" do
     [nil, ""].each do |value|
       context "when `input` is #{value.nil? ? 'nil' : 'blank'}" do
-        it "raises an ArgumentError" do
-          expect { subject.parse(value) }.to raise_error(ArgumentError, "input cannot be nil or blank")
+        it "is empty" do
+          expect(subject.parse(value)).to be_empty
         end
       end
     end
