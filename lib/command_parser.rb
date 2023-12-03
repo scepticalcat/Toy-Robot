@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support/core_ext/object/blank"
+
 class CommandParser
   COMMAND_NAMESPACE = Command
   private_constant :COMMAND_NAMESPACE

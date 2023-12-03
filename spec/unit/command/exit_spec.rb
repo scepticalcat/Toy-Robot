@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Command::Exit do
+  describe "SCOPE" do
+    subject { described_class.new }
+
+    it "is :application scoped" do
+      expect(subject.scope).to eq :application
+    end
+  end
+
   describe "#execute" do
     subject { described_class.new }
 

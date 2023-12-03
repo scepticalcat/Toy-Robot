@@ -25,9 +25,38 @@ These will rotate the robot 90 degrees in the specified direction without changi
 This will announce the current position and facing; `X`,`Y` and `F` of the robot.
 
 ## Installation
+### Docker
+- `docker build . --tag no5`
 
+### Native
+- Ensure that Ruby ~> 3.2.0 is installed
+- Run `bundle install`
 
 ## Running the Simulation
+### Docker
+- `docker run -ti -v ${PWD}:/No5 --rm --name no5 no5 run`
 
+### Native
+- `./bin/run`
 
 ## Running tests
+### Docker
+- `docker run -v ${PWD}:/No5 --rm --name no5 no5 quality`
+
+### Native
+- `./bin/quality`
+
+Alternatively you can run the quality steps manually:
+- `rspec`
+- `rubocop`
+
+## Limitations
+Caveat, this was developed on a Windows machine and as such while the "native" or non-containerized installation and execution instructions are included, they have *not* been verified due to the nature of developing with Ruby on a Windows system and are there primarily as indicative documentation only.
+
+Ordinarily I would leverage the I18N gem to remove hardcoded strings where practical. This makes testing more robust as I18N can be stubbed, allowing tests to ignore irrelevant copy changes, but more importantly it provides a standardised, predictable place for output strings to be stored.
+
+I'm not sold on the command parser and the necessity of having to instantiate the commands as I would expect them to be static, but I wanted a somewhat self expanding interface and couldn't find a cleaner way of pre-applying the parsed arguments without forcing an outside class to bear resposibility for them.
+
+To that end, including sufficient meta data within the commands themselves to allow the help text to be dynamically built is also an extention I would like to have made.
+
+There are examples where a shared example group could have been used to reduce duplication, especially within the commands.

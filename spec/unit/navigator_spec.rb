@@ -80,7 +80,7 @@ RSpec.describe Navigator do
       let(:facing) { "NORTH" }
 
       it "increments x by 1" do
-        expect(subject.next).to eq Vector[x + 1, y]
+        expect(subject.next.position).to eq Vector[x + 1, y]
       end
     end
 
@@ -88,7 +88,7 @@ RSpec.describe Navigator do
       let(:facing) { "EAST" }
 
       it "increments y by 1" do
-        expect(subject.next).to eq Vector[x, y + 1]
+        expect(subject.next.position).to eq Vector[x, y + 1]
       end
     end
 
@@ -96,7 +96,7 @@ RSpec.describe Navigator do
       let(:facing) { "SOUTH" }
 
       it "decrements x by 1" do
-        expect(subject.next).to eq Vector[x - 1, y]
+        expect(subject.next.position).to eq Vector[x - 1, y]
       end
     end
 
@@ -104,8 +104,15 @@ RSpec.describe Navigator do
       let(:facing) { "WEST" }
 
       it "decrements y by 1" do
-        expect(subject.next).to eq Vector[x, y - 1]
+        expect(subject.next.position).to eq Vector[x, y - 1]
       end
+    end
+
+    it "does not modify the current position" do
+      navigator = Navigator.new 0, 0, "NORTH"
+      candidate = navigator.next
+
+      expect(candidate.position).to_not match navigator.position
     end
   end
 

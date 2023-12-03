@@ -14,6 +14,8 @@ class Navigator
 
   private_constant :CARDINAL_DIRECTIONS, :COMPASS
 
+  attr_reader :position
+
   def initialize x, y, facing # rubocop:disable Naming/MethodParameterName
     raise ArgumentError, "invalid coordinates" unless coordinate_valid?(x) && coordinate_valid?(y)
     raise ArgumentError, "facing must be one of #{CARDINAL_DIRECTIONS.join ', '}" unless facing_valid? facing
@@ -27,7 +29,7 @@ class Navigator
   end
 
   def next
-    position + Vector[*COMPASS[facing]]
+    Navigator.new(*position + Vector[*COMPASS[facing]], facing)
   end
 
   def right
@@ -45,7 +47,7 @@ class Navigator
 
   private
 
-  attr_reader :facing, :position
+  attr_reader :facing
 
   def coordinate_valid? value
     value.is_a?(Integer) || value.to_i.to_s == value

@@ -6,6 +6,9 @@ class Application
   def initialize stdin, stdout
     @stdin = stdin
     @stdout = stdout
+
+    @table = Table.new
+    @robot = Robot.new table
   end
 
   def start
@@ -18,7 +21,7 @@ class Application
 
   private
 
-  attr_reader :stdin, :stdout
+  attr_reader :stdin, :stdout, :robot, :table
 
   def execute input
     command = CommandParser.parse input
@@ -26,8 +29,9 @@ class Application
     case command.scope
     when :application
       command.execute
+    when :robot
+      command.execute robot
     else
-      # command.execute send(:scope)
       raise InvalidScopeError, command.scope
     end
   end
