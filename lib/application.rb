@@ -1,45 +1,62 @@
 # frozen_string_literal: true
 
+require "active_support/core_ext/object/blank"
+
 class Application
-  class << self
-    def start stdin, stdout
-      trap("SIGINT") { quit(stdout) }
+  def initialize stdin, stdout
+    @stdin = stdin
+    @stdout = stdout
+  end
 
-      run stdin, stdout
+  def start
+    trap("SIGINT") { quit }
+
+    run
+  rescue Terminated
+    quit
+  end
+
+  private
+
+  attr_reader :stdin, :stdout
+
+  def execute input
+    command = CommandParser.parse input
+
+    case command.scope
+    when :application
+      command.execute
+    else
+      # command.execute send(:scope)
+      raise InvalidScopeError, command.scope
     end
+  end
 
-    private
+  def prompt
+    stdout.print "> "
 
-    EXIT_PATTERN = /^EXIT$/i
+    stdin.gets.chomp
+  end
 
-    def prompt stdin, stdout
-      stdout.print "> "
+  def quit
+    stdout.puts "Bye!"
 
-      stdin.gets.chomp
-    end
+    exit
+  end
 
-    def quit stdout
-      stdout.puts "Bye!"
+  def run
+    while (input = prompt)
+      next unless input.present?
 
-      exit
-    end
+      begin
+        message = execute input
 
-    def run stdin, stdout
-      while (input = prompt(stdin, stdout))
-        next unless input.present?
-
-        command, *arguments = InputParser.parse input
-
-        quit(stdout) if EXIT_PATTERN.match? command
-
-        begin
-          raise CommandNotFoundError
-        rescue CommandNotFoundError
-          stdout.puts "Command '#{command}' not found, try 'HELP'"
-        end
+        stdout.puts message unless message.blank?
+      rescue CommandParser::CommandNotFoundError
+        stdout.puts "Command '#{input}' not found, try 'HELP'"
       end
     end
-
-    class CommandNotFoundError < StandardError; end
   end
+
+  class InvalidScopeError < StandardError; end
 end

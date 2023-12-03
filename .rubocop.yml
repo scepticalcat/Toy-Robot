@@ -5,6 +5,9 @@ Metrics/BlockLength:
   Exclude: 
     - spec/**/*
 
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+
 Style/Documentation:
   Enabled: false
 

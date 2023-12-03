@@ -9,4 +9,4 @@ loader.setup
 
 loader.eager_load
 
-Application.start $stdin, $stdout
+Application.new($stdin, $stdout).start
